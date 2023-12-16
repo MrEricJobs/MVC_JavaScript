@@ -7,6 +7,8 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 /////////////////////////////////////////////////////////////////////
 
+// 공통 컴포넌트 초기화 함수
+
 /**
  * 내비게이션 바 초기화
  */
@@ -33,6 +35,9 @@ function initNavbar() {
         navMenu.addEventListener('click', onNavMenuClick1);
     }
 }
+
+
+
 /////////////////////////////////////////////////////////////////////
 // 공통 컴포넌트 클릭 이벤트 핸들러
 
