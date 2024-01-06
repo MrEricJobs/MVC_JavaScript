@@ -4,6 +4,15 @@ let currentIframe = null;
 // DomContentLoaded와 load의 차이:
 window.addEventListener('DOMContentLoaded', function() {
     initNavbar();
+
+    // 페이지 로드 직후 바로 대시보드 불러오기
+    let pageWrap = document.querySelector('#page-wrap');
+    let iframe = document.createElement('iframe');
+    iframe.className = 'page-iframe';
+    iframe.src = '/dashboard';
+
+    currentIframe = iframe;
+    pageWrap.append(iframe);
 });
 /////////////////////////////////////////////////////////////////////
 
