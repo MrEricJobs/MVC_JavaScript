@@ -1,4 +1,4 @@
-from flask import Blueprint,jsonify
+from flask import Blueprint, jsonify
 from app.service.github_service import GithubService
 
 github_bp = Blueprint("GithubController", __name__)

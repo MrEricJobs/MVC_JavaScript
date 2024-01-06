@@ -1,23 +1,48 @@
-from db_interface import DBInterface
+from app.model.db_interface import DBInterface
 
 
 class BoardAccess:
     """DAO: DATA ACCESS OBJECT"""
-    @staticmethod
-    def find_category_by_id(category_id):
-        db = DBInterface()
-        db.connect()
+    def __init__(self):
+        self.db = DBInterface()
 
-        result = db.fetch_query(f"""
+    def find_all_category(self):
+        self.db.connect()
+        result = self.db.fetch_query("""
+            SELECT category_id,
+                   title,
+                   datetime(crt, 'localtime'),
+                   datetime(amd, 'localtime')
+            FROM Category
+            ORDER BY title
+        """)
+        self.db.disconnect()
+
+        if len(result) == 0:
+            return []
+
+        for i in range(len(result)):
+            result[i] = {
+                'category_id': result[i][0],
+                'title': result[i][1],
+                'crt': result[i][2],
+                'amd': result[i][3]
+            }
+        return result
+
+    def find_category_by_id(self, category_id):
+        self.db.connect()
+
+        result = self.db.fetch_query("""
             SELECT category_id,
                 title,
                 datetime(crt, 'localtime'),
                 datetime(amd, 'localtime')
             FROM Category
-            WHERE category_id = {category_id};
-        """)
+            WHERE category_id = ?;
+        """, category_id)
 
-        db.disconnect()
+        self.db.disconnect()
 
         if len(result) == 0:
             return None
@@ -29,21 +54,13 @@ class BoardAccess:
             'amd': result[0][3]
         }
 
-    @staticmethod
-    def create_category(title):
-        db = DBInterface()
-        db.connect()
+    def create_category(self, title):
+        self.db.connect()
 
-        db.execute_query(f"""
+        self.db.execute_query("""
             INSERT INTO Category (title) 
-            VALUES ('{title}')
-        """)
+            VALUES (?)
+        """, title)
 
-        db.disconnect()
+        self.db.disconnect()
 
-
-print(BoardAccess.find_category_by_id(1))
-
-
-#의도하지 않은 동작
-print(BoardAccess.find_category_by_id("0 OR title LIKE '%자유게시판%'"))

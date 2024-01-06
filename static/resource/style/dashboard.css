@@ -125,7 +125,7 @@
     background-color: var(--card-bg-footer-color);
 }
 
-.card-footer > a,
+.card-footer > a, 
 .card-footer > button {
     float: right;
 }

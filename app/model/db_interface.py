@@ -18,14 +18,14 @@ class DBInterface:
         self.connection = None
         self.cursor= None
 
-    def execute_query(self, query):
+    def execute_query(self, query, *param):
         """결과값 반환 X"""
-        self.cursor.execute(query)
+        self.cursor.execute(query, param)
         self.connection.commit()
 
-    def fetch_query(self, query):
+    def fetch_query(self, query, *param):
         """결과값 반환 O"""
-        self.cursor.execute(query)
+        self.cursor.execute(query, param)
         return self.cursor.fetchall()
 
 
