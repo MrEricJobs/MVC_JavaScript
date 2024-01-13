@@ -10,7 +10,7 @@ class GithubService:
         GithubService 생성자\n
         Github 에서 발급 받은 개인 엑세스 토큰을 통해 Github API 서비스에 접근
         """
-        self.g = Github(auth=Auth.Token('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'))
+        self.g = Github(auth=Auth.Token('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'))
 
     def get_user_info(self):
         """
@@ -51,6 +51,6 @@ class GithubService:
             for filename in g.files.keys():
                 gist_list.append({
                     'filename': filename,
-                    'url' : g.html_url
+                    'url': g.html_url
                 })
         return gist_list

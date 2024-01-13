@@ -54,6 +54,35 @@ class BoardAccess:
             'amd': result[0][3]
         }
 
+    def find_all_post(self, category_id):
+        self.db.connect()
+        result = self.db.fetch_query("""
+                    SELECT post_id,
+                           title,
+                           content,
+                           datetime(crt, 'localtime'),
+                           view,
+                           row_number() over(ORDER BY crt ASC)
+                    FROM Post
+                    WHERE category_id = ?
+                    ORDER BY crt DESC
+                """, category_id)
+        self.db.disconnect()
+
+        if len(result) == 0:
+            return []
+
+        for i in range(len(result)):
+            result[i] = {
+                'post_id': result[i][0],
+                'title': result[i][1],
+                'content': result[i][2],
+                'crt': result[i][3],
+                'view': result[i][4],
+                'no': result[i][5]
+            }
+        return result
+
     def create_category(self, title):
         self.db.connect()
 
@@ -64,3 +93,10 @@ class BoardAccess:
 
         self.db.disconnect()
 
+    def create_post(self, category_id, title, content):
+        self.db.connect()
+        self.db.execute_query("""
+            INSERT INTO Post(category_id, title, content)
+            VALUES(?, ?, ?)
+        """, category_id, title, content)
+        self.db.disconnect()

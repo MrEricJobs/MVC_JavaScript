@@ -56,6 +56,7 @@ def initialize_once():
             content TEXT NOT NULL,
             crt DATETIME DEFAULT CURRENT_TIMESTAMP,
             amd DATETIME DEFAULT CURRENT_TIMESTAMP,
+            view INTEGER DEFAULT 0,
             CONSTRAINT category_fk FOREIGN KEY (category_id)
             REFERENCES Category(category_id) ON DELETE CASCADE
         );
