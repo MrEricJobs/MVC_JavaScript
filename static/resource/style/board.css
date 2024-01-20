@@ -7,11 +7,13 @@
     --card-border-color: #dbdee3;
 
     --category-font-color: #333333;
+    --title-font-color: #1e1e1e;
+    --info-font-color: #444444;
 }
 
 .category-card {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     position: relative;
     height: 50px;
     border: 1px solid var(--card-border-color);
@@ -74,7 +76,9 @@
     flex-direction: column;
     width: 100%;
     padding: 10px 0;
-    height: 630px;
+    height: 600px;
+    max-height: 600px;
+    margin-bottom: auto;
 }
 
 .post-card-editor .ql-toolbar {
@@ -105,6 +109,36 @@
     padding-bottom: 0;
 }
 
+.post-write-card .read-mode-header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 400;
+    padding-bottom: 10px;
+    gap: 10px;
+    border-bottom: 1px solid var(--card-border-color);
+}
+
+.read-mode-header .category-block {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--category-font-color);
+}
+
+.read-mode-header .title-block {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--title-font-color);
+}
+
+.read-mode-header .etc-info-block {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--info-font-color);
+}
+
 .post-card-body {
     display: flex;
     position: relative;
@@ -118,6 +152,7 @@
     display: flex;
     justify-content: end;
     gap: 10px;
+    padding: 10px 0;
 }
 
 .post-list {

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint,jsonify
 from app.service.github_service import GithubService
 
 github_bp = Blueprint("GithubController", __name__)
@@ -33,3 +33,4 @@ def gist():
     """
     repo_list = github_service.get_gist_list()
     return jsonify(repo_list)
+
