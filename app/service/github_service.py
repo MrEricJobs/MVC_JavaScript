@@ -10,7 +10,7 @@ class GithubService:
         GithubService 생성자\n
         Github 에서 발급 받은 개인 엑세스 토큰을 통해 Github API 서비스에 접근
         """
-        self.g = Github(auth=Auth.Token('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'))
+        self.g = Github(auth=Auth.Token('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'))
 
     def get_user_info(self):
         """

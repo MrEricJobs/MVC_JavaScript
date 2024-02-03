@@ -21,6 +21,9 @@ class BoardService:
         self.board_access.create_post(category_id, title, content)
 
     def get_post(self, post_id):
+        """
+        특정 게시글을 불러온다
+        """
         return self.board_access.find_post_by_id(post_id)
 
     def get_posts(self, category_id):
@@ -29,3 +32,5 @@ class BoardService:
         """
         return self.board_access.find_all_post(category_id)
 
+    def count_post(self, category_id):
+        return self.board_access.count_post_by_category_id(category_id)
