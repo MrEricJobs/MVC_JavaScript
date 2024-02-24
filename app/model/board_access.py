@@ -99,7 +99,7 @@ class BoardAccess:
 
         db.disconnect()
 
-    def find_all_post(self, category_id):
+    def find_all_post(self, category_id, limit, offset):
         """
         카테고리 하위의 모든 게시글 검색
         """
@@ -117,7 +117,8 @@ class BoardAccess:
             FROM Post
             WHERE category_id = ?
             ORDER BY crt DESC
-        """, category_id)
+            LIMIT ? OFFSET ?
+        """, category_id, limit, offset)
 
         db.disconnect()
 

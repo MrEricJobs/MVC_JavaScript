@@ -26,11 +26,18 @@ class BoardService:
         """
         return self.board_access.find_post_by_id(post_id)
 
-    def get_posts(self, category_id):
+    def get_posts(self, category_id, max_post, page):
         """
         카테고리 하위의 게시글을 불러온다
         """
-        return self.board_access.find_all_post(category_id)
+        limit = max_post
+        offset = (page - 1) * limit
+
+        return self.board_access.find_all_post(
+            category_id,
+            limit,
+            offset
+        )
 
     def count_post(self, category_id):
         return self.board_access.count_post_by_category_id(category_id)

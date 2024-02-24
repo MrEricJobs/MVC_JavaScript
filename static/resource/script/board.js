@@ -3,7 +3,7 @@ let params = {};
 const pagination = {
     total: 0,
     totalPage: 1,
-    maxPost: 15,
+    maxPost: 2,
     maxList: 5,
     currPage: 1,
     currRange: { start: 0, end: 0 },
@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', function() {
         
     // category_id가 있다면 게시글 리스트 출력
     if (params.category_id !== undefined) {
-        loadPosts(params.category_id);
+        loadPosts(params.category_id, pagination.maxPost, 1);
     }
 });
 
@@ -43,8 +43,7 @@ async function loadCategories() {
         a.innerText = category.title;
 
         a.addEventListener('click', function() {
-            loadPosts(category.category_id);
-            countPost(category.category_id);
+            document.querySelector('#post-list').innerHTML = '';
             paginationInit(category.category_id);
         });
 
@@ -55,8 +54,8 @@ async function loadCategories() {
 /**
  * 게시글 불러오기
  */
-async function loadPosts(category_id) {
-    let response = await fetch(`/board-api/posts?category_id=${category_id}`, {
+async function loadPosts(category_id, max_post, page) {
+    let response = await fetch(`/board-api/posts?category_id=${category_id}&max_post=${max_post}&page=${page}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -115,8 +114,8 @@ async function paginationInit(category_id) {
     pagination.total = await countPost(category_id);
     pagination.totalPage = Math.ceil(pagination.total / pagination.maxPost);
     pagination.currPage = 1;
-    pagination.currRange.start = Math.min(pagination.totalPage, 1);
-    pagination.currRange.end = Math.max(pagination.totalPage, 0)
+    pagination.currRange.start = 1;
+    pagination.currRange.end = Math.min(pagination.totalPage, pagination.maxList);
     pagination.category_id = category_id;
 
     setupPageList();
@@ -124,9 +123,9 @@ async function paginationInit(category_id) {
 
 function setupPageList() {
     let pageList = document.querySelector('#page-list');
-
+    
     let {start, end} = pagination.currRange;
-
+    
     pageList.innerHTML = '';
     for (let num = start; num <= end; num++) {
         let pageDiv = document.createElement('div');
@@ -141,6 +140,14 @@ function setupPageList() {
 }
 
 function setPage(num) {
+    // 페이지 번호가 현재 페이지 그룹을 벗어났을 때
+    // ex) 페이지리스트가 1,2,3,4,5 인데 6번 페이지로 이동할 때
+    // 6, 7, 8, 9, 10 으로 페이지리스트를 번경해준다.
+    // 단 1, 2, 3, 4, 5, 리스트에서 8번 이동할때도 동일하게
+    // 페이지 리스트는 6, 7, 8, 9, 10이 되어야 한다.
+    // 그럼 여기서 start와 end 범위 그리고 num을 보고
+    // start와 end를 수정 후 setupPageList를 호출하면 끝!
+
     let pageDiv = document.querySelector(`.page[data-value="${num}"]`);
     let otherPageDiv = document.querySelectorAll(`.page:not([data-value="${num}"])`);
     
@@ -150,4 +157,6 @@ function setPage(num) {
     for (let other of otherPageDiv) {
         other.className = other.className.replace(' on', '');
     }
+    pagination.currPage = num;
+    loadPosts(pagination.category_id, pagination.maxPost, num);
 }   
