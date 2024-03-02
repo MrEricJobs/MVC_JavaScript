@@ -1,3 +1,6 @@
+// 카테고리가 있다면 첫번재 카테고리 첫번째 페이지 출력
+// 여유 있다면 게시글 조회 및 생성 이후 원래 페이지로 돌아오게 하기
+
 let params = {};
 
 const pagination = {
@@ -119,6 +122,13 @@ async function paginationInit(category_id) {
     pagination.category_id = category_id;
 
     setupPageList();
+
+    let postList = document.querySelector('#post-list');
+    postList.innerHTML = '';
+
+    if (pagination.totalPage !== 0) {
+        setPage(1);
+    }
 }
 
 function setupPageList() {
@@ -137,16 +147,62 @@ function setupPageList() {
         });
         pageList.append(pageDiv);
     }
+
+    let firstBtn = document.querySelector('#first-page');
+    let prevBtn = document.querySelector('#prev-page');
+    let nextBtn = document.querySelector('#next-page');
+    let lastBtn = document.querySelector('#last-page');
+
+    if(pagination.currRange.start === 1 || pagination.totalPage === 0) {
+        firstBtn.classList.add('disabled');
+    }
+    else {
+        firstBtn.classList.remove('disabled');
+        firstBtn.onclick = function(){ setPage(1); };
+    }
+
+    let prevNum = pagination.currRange.start - pagination.maxList;
+    if (prevNum <=0) {
+        prevBtn.classList.add('disabled');
+    }
+    else {
+        prevBtn.classList.remove('disabled');
+        prevBtn.onclick = function () { setPage(prevNum); };
+    }
+    
+    if(pagination.currRange.end === pagination.totalPage || pagination.totalPage === 0) {
+        lastBtn.classList.add('disabled');
+    }
+    else {
+        lastBtn.classList.remove('disabled');
+        lastBtn.onclick = function(){ setPage(pagination.totalPage); };
+    }
+
+    let nextNum = pagination.currRange.end + 1;
+    if (nextNum > pagination.totalPage) {
+        nextBtn.classList.add('disabled');
+    }
+    else {
+        nextBtn.classList.remove('disabled');
+        nextBtn.onclick = function () { setPage(nextNum); };
+    }
+
 }
 
 function setPage(num) {
-    // 페이지 번호가 현재 페이지 그룹을 벗어났을 때
-    // ex) 페이지리스트가 1,2,3,4,5 인데 6번 페이지로 이동할 때
-    // 6, 7, 8, 9, 10 으로 페이지리스트를 번경해준다.
-    // 단 1, 2, 3, 4, 5, 리스트에서 8번 이동할때도 동일하게
-    // 페이지 리스트는 6, 7, 8, 9, 10이 되어야 한다.
-    // 그럼 여기서 start와 end 범위 그리고 num을 보고
-    // start와 end를 수정 후 setupPageList를 호출하면 끝!
+    let {start, end} = pagination.currRange;
+
+    if (end === 0) return;
+
+    pagination.currPage = num;
+
+    if (num < start || num > end) {
+        pagination.currRange.start = Math.floor((pagination.currPage - 1) / pagination.maxList) * pagination.maxList + 1;
+        pagination.currRange.end = Math.min(pagination.currRange.start + pagination.maxList - 1, pagination.totalPage);
+        setupPageList();
+        setPage(num);
+        return;
+    }
 
     let pageDiv = document.querySelector(`.page[data-value="${num}"]`);
     let otherPageDiv = document.querySelectorAll(`.page:not([data-value="${num}"])`);
@@ -157,6 +213,5 @@ function setPage(num) {
     for (let other of otherPageDiv) {
         other.className = other.className.replace(' on', '');
     }
-    pagination.currPage = num;
     loadPosts(pagination.category_id, pagination.maxPost, num);
 }   
