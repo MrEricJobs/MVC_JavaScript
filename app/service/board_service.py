@@ -30,8 +30,8 @@ class BoardService:
         """
         카테고리 하위의 게시글을 불러온다
         """
-        limit = max_post
-        offset = (page - 1) * limit
+        limit = max_post             # 쿼리결과 개수
+        offset = (page - 1) * limit  # 쿼리결과를 불러올 위치
 
         return self.board_access.find_all_post(
             category_id,
@@ -40,4 +40,7 @@ class BoardService:
         )
 
     def count_post(self, category_id):
+        """
+        카테고리 하위의 모든 게시글 개수 집계
+        """
         return self.board_access.count_post_by_category_id(category_id)

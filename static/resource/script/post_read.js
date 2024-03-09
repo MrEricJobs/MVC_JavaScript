@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', function() {
     // back버튼 클릭시 이벤트
     let back = document.querySelector('#back');
     back.addEventListener('click', function(evt) {
-        window.location = `/board?category_id=${params.category_id}`;
+        window.location = `/board?category_id=${params.category_id}&currPage=${params.currPage}`;
     });
 });
 

@@ -35,12 +35,12 @@ def post_write():
 @board_bp.route('/posts')
 def post_list():
     category_id = request.args.get('category_id')
-    max_post = request.args.get('max_post')
-    page = request.args.get('page')
+    max_post = int(request.args.get('max_post'))
+    page = int(request.args.get('page'))
     posts = board_service.get_posts(
         category_id,
-        int(max_post),
-        int(page)
+        max_post,
+        page
     )
     return jsonify(posts)
 

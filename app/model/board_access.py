@@ -12,7 +12,6 @@ class BoardAccess:
         모든 카테고리 반환
         """
         db = DBInterface()
-
         db.connect()
 
         result = db.fetch_query("""
@@ -43,7 +42,6 @@ class BoardAccess:
         ID값을 통해 카테고리를 찾는다
         """
         db = DBInterface()
-
         db.connect()
 
         result = db.fetch_query("""
@@ -74,7 +72,6 @@ class BoardAccess:
         새로운 카테고리를 생성
         """
         db = DBInterface()
-
         db.connect()
 
         db.execute_query("""
@@ -89,7 +86,6 @@ class BoardAccess:
         새로운 게시글을 생성
         """
         db = DBInterface()
-
         db.connect()
 
         db.execute_query("""
@@ -104,7 +100,6 @@ class BoardAccess:
         카테고리 하위의 모든 게시글 검색
         """
         db = DBInterface()
-
         db.connect()
 
         posts = db.fetch_query("""
@@ -142,7 +137,6 @@ class BoardAccess:
         특정 게시글을 불러온다
         """
         db = DBInterface()
-
         db.connect()
 
         result = db.fetch_query("""
@@ -174,16 +168,17 @@ class BoardAccess:
             'category': result[0][6]
         }
 
-
     def count_post_by_category_id(self, category_id):
+        """
+        카테고리 하위의 모든 게시글 개수 집계
+        """
         db = DBInterface()
-
         db.connect()
 
         result = db.fetch_query("""
             SELECT COUNT(*)
             FROM Post
-            WHERE category_id = ?;
+            WHERE category_id = ?
         """, category_id)
 
         db.disconnect()
