@@ -25,6 +25,10 @@
     --button-secondary-border-color: #808080;
     --button-secondary-font-color: #333333; 
 
+    /* Modal colors */
+    --modal-border-color: #dbdee3;
+    --modal-bg-color: #ffffff;
+    --modal-title-color: #1e1e1e;
 }
 
 /*
@@ -132,7 +136,6 @@ body.root {
     border-bottom: unset;
 }
 
-
 .nav-menu:hover {
     background-color: var(--nav-item-bg-invert-color);
     color: var(--nav-font-invert-color);
@@ -141,6 +144,57 @@ body.root {
 .nav-menu.on {
     border-bottom: 3px solid var(--nav-point-color);
 }
+
+.nav-menu.setting {
+    display: flex;
+    width: 80px;
+    cursor: pointer;
+    text-align: center;
+    background-color: unset;
+    background-image: url(/resource/icon/setting-icon.svg);
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    margin-left: auto;
+}
+.nav-menu.home:hover,
+.nav-menu.setting:hover {
+    background-color: initial;
+    color: initial;
+}
+.nav-menu.home.on,
+.nav-menu.setting.on {
+    border-bottom: unset;
+}
+
+/*
+    form
+****************************/
+.form-dropdown {
+    border: 1px solid var(--card-border-color);
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 8px 12px;
+}
+.form-dropdown option {
+    border: none;
+    outline: none;
+}
+.form-dropdown:focus {
+    outline: none;
+    box-shadow: 0px 0px 8px 0px var(--modal-border-color);
+}
+.form-text {
+    border: 1px solid var(--modal-border-color);
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 8px 12px;
+}
+.form-text:focus {
+    outline: none;
+    box-shadow: 0px 0px 8px 0px var(--modal-border-color);
+}
+
 
 /*
     iframe
@@ -284,4 +338,65 @@ a.large {
 
 .btn-secondary:hover {
     box-shadow: 0px 0px 8px 0px var(--button-secondary-border-color);
+}
+
+/*
+    login modal
+****************************/
+.login-modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: -400px;
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.login-modal.on {
+    display: block;
+    top: 0px;
+    opacity: 1;
+    user-select: unset;
+    pointer-events: unset;
+}
+
+.login-modal .backdrop {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+}
+
+.login-modal .modal-box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-content: baseline;
+    border-radius: 4px;
+    border: 1px solid var(--modal-border-color);
+    background: var(--modal-bg-color);
+    box-shadow: 0px 0px 8px 0px var(--modal-border-color);
+    width: 390px;
+    height: 190px;
+    top: 30px;
+    left: calc(50% - 200px);
+    z-index: 101;
+    padding: 10px;
+    gap: 10px;
+    transition: top 0.3s ease;
+}
+.login-modal .modal-box > label.title {
+    font-size: 21px;
+    font-weight: 500;
+    color: var(--modal-title-color);
+    margin-bottom: 10px;
+}
+.login-modal .modal-box > .btn-wrap {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: end;
+    gap: 8px;
 }

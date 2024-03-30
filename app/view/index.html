@@ -20,10 +20,38 @@
         <a class="nav-menu home" href="/dashboard"></a>
         <a class="nav-menu" href="/practice">Practice</a>
         <a class="nav-menu" href="/board">Board</a>
+        <a class="nav-menu setting" href="/setting"></a>
     </nav>
 
     <!-- 페이지 iframe -->
     <main class="page-iframe-wrap" id="page-wrap"></main>
+
+    <!-- 로그인 Modal -->
+    <section class="login-modal" id="login-modal">
+        <div class="backdrop"></div>
+        <div class="modal-box">
+            <label class="title">Login</label>
+            <input type="text" class="form-text" placeholder="ID">
+            <input type="password" class="form-text" placeholder="PW">
+            <div class="btn-wrap">
+                <button class="btn-primary" id="r-btn">Sign Up</button>
+                <button class="btn-secondary">Sign In</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 회원가입 Modal -->
+    <section class="login-modal" id="register-modal">
+        <div class="backdrop"></div>
+        <div class="modal-box">
+            <label class="title">Register</label>
+            <input type="text" class="form-text" placeholder="ID">
+            <input type="password" class="form-text" placeholder="PW">
+            <div class="btn-wrap">
+                <button class="btn-primary">Submit</button>
+            </div>
+        </div>
+    </section>
 
     <!-- 페이지 렌더링용 히든 블록 -->
     <div style="display: none;" id="page-render-wrap"></div>

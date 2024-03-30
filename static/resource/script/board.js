@@ -3,7 +3,7 @@ let params = {};
 const pagination = {
     total    : 0,                    // 총 게시글 개수
     totalPage: 0,                    // 총 페이지 번호
-    maxPost  : 2,                   // 최대 표시 가능한 게시글 개수
+    maxPost  : 15,                   // 최대 표시 가능한 게시글 개수
     maxList  : 5,                    // 최대 페이지 리스트 개수
     currPage : 1,                    // 현재 페이지 번호
     currRange: { start: 0, end: 0 }, // 현재 페이지 리스트 범위,

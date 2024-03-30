@@ -4,6 +4,8 @@ let currentIframe = null;
 // DomContentLoaded와 load의 차이:
 window.addEventListener('DOMContentLoaded', function() {
     initNavbar();
+    initLoginModal();
+    initRegisterModal();
 
     // 페이지 로드 직후 바로 대시보드 불러오기
     let pageWrap = document.querySelector('#page-wrap');
@@ -25,6 +27,13 @@ function initNavbar() {
     // 내비게이션 바
     let navbar = document.querySelector('#navbar');
 
+    let settingBtn = navbar.querySelector('.setting');
+    let modal = document.querySelector('#login-modal');
+    settingBtn.addEventListener('click', function(evt) {
+        evt.preventDefault();
+        modal.classList.add('on');
+    });
+
     // 내비게이션 바에 동적 메뉴 추가시 감지 및 클릭 이벤트 등록
     let navbarObserver = new MutationObserver((mutations) => {
         for (let mutation of mutations) {
@@ -41,8 +50,34 @@ function initNavbar() {
     // 이미 있는 메뉴 클릭 이벤트 등록
     let navMenuList = navbar.querySelectorAll('.nav-menu');
     for (let navMenu of navMenuList) {
+        if (navMenu.classList.contains('setting')) continue;
         navMenu.addEventListener('click', onNavMenuClick1);
     }
+}
+
+function initLoginModal() {
+    let modal = document.querySelector('#login-modal');
+    let backdrop = modal.querySelector('.backdrop');
+
+    backdrop.addEventListener('click', function() {
+        modal.classList.remove('on');
+    });
+
+    let modalR = document.querySelector('#register-modal');
+    let rBtn = modal.querySelector('#r-btn');
+    rBtn.addEventListener('click', function() {
+        modal.classList.remove('on');
+        modalR.classList.add('on');
+    });
+}
+
+function initRegisterModal() {
+    let modal = document.querySelector('#register-modal');
+    let backdrop = modal.querySelector('.backdrop');
+
+    backdrop.addEventListener('click', function() {
+        modal.classList.remove('on');
+    });
 }
 
 
