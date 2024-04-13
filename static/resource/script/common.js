@@ -74,9 +74,14 @@ function initLoginModal() {
 function initRegisterModal() {
     let modal = document.querySelector('#register-modal');
     let backdrop = modal.querySelector('.backdrop');
+    let submitBtn = modal.querySelector('#register-submit');
 
     backdrop.addEventListener('click', function() {
         modal.classList.remove('on');
+    });
+    
+    submitBtn.addEventListener('click', function() {
+        submitRegistration();
     });
 }
 
@@ -113,4 +118,26 @@ function onNavMenuClick1(event) {
     }
     currentIframe = iframe;
     pageWrap.append(iframe);
+}
+
+async function submitRegistration() {
+    let inputID = document.querySelector('#register-id');
+    let inputPW = document.querySelector('#register-id');
+
+    let response = await fetch('/user-api/sign-up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id: inputID.value,
+            pw: inputPW.value
+        })
+    });
+
+    let result = await response.json();
+    if (result.state === 'success') {
+        alert('회원가입 성공!');
+    }
+    else {
+        alert('회원가입 실패!');
+    }
 }
