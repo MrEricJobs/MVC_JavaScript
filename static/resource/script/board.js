@@ -16,19 +16,21 @@ window.addEventListener('DOMContentLoaded', function() {
     for (let [key, value] of urlSearchParams) {
         params[key] = value;
     }
-
     loadCategories().then(function() {
+        // category_id가 URL로 전달된 경우
         if (params.category_id !== undefined) {
             pagination.category_id = params.category_id;
         }
 
+        // 카테고리ID가 할당된 경우 게시글 목록 호출
         if (pagination.category_id) {
             paginationInit(pagination.category_id).then(function() {
+                // currPage가 URL로 전달된 경우
                 if (params.currPage !== undefined) {
                     pagination.currPage = params.currPage;
                 }
                 setPage(pagination.currPage);
-            });
+            })
         }
     });
 });
@@ -58,9 +60,11 @@ async function loadCategories() {
 
         categoryList.append(a);
     }
+
+    // 첫번째 카테고리를 pagination의 속성으로 설정
     if(categories.length > 0) {
         pagination.category_id = categories[0].category_id;
-        pagination.currPage = 1;
+        pagination.currPage    = 1;
     }
 }
 

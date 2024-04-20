@@ -27,10 +27,11 @@ function initNavbar() {
     // 내비게이션 바
     let navbar = document.querySelector('#navbar');
 
+    // setting 버튼 이벤트 할당
     let settingBtn = navbar.querySelector('.setting');
     let modal = document.querySelector('#login-modal');
     settingBtn.addEventListener('click', function(evt) {
-        evt.preventDefault();
+        evt.preventDefault(); // a태그 기본 동작 방지
         modal.classList.add('on');
     });
 
@@ -55,22 +56,36 @@ function initNavbar() {
     }
 }
 
+/**
+ * 로그인 모달 초기화
+ */
 function initLoginModal() {
-    let modal = document.querySelector('#login-modal');
-    let backdrop = modal.querySelector('.backdrop');
+    let modal     = document.querySelector('#login-modal');
+    let backdrop  = modal.querySelector('.backdrop');
+    let signUpBtn = modal.querySelector('#sign-up'); 
+    let signInBtn = modal.querySelector('#sign-in');
 
+    // 외부영역을 감싸는 backdrop 요소를 클릭시 모달 숨기기
     backdrop.addEventListener('click', function() {
         modal.classList.remove('on');
     });
 
-    let modalR = document.querySelector('#register-modal');
-    let rBtn = modal.querySelector('#r-btn');
-    rBtn.addEventListener('click', function() {
+    // 회원가입 버튼 클릭시 모달 셔플(로그인 숨기고 회원가입 띄우기)
+    signUpBtn.addEventListener('click', function() {
+        let registerModal = document.querySelector('#register-modal');
         modal.classList.remove('on');
-        modalR.classList.add('on');
+        registerModal.classList.add('on');
     });
+
+    // 로그인 버튼 클릭시 로그인 시도
+    signInBtn.addEventListener('click', function() {
+        requestLogin();
+    })
 }
 
+/**
+ * 회원가입 모달 초기화
+ */
 function initRegisterModal() {
     let modal = document.querySelector('#register-modal');
     let backdrop = modal.querySelector('.backdrop');
@@ -79,13 +94,13 @@ function initRegisterModal() {
     backdrop.addEventListener('click', function() {
         modal.classList.remove('on');
     });
-    
+
     submitBtn.addEventListener('click', function() {
-        submitRegistration();
+        submitRegistration().then(function() {
+            modal.classList.remove('on');
+        });
     });
 }
-
-
 
 /////////////////////////////////////////////////////////////////////
 // 공통 컴포넌트 클릭 이벤트 핸들러
@@ -120,24 +135,58 @@ function onNavMenuClick1(event) {
     pageWrap.append(iframe);
 }
 
+/////////////////////////////////////////////////////////////////////
+// 회원가입 및 로그인 관련 요청 함수
+
+/** 회원가입 요청 함수 */
 async function submitRegistration() {
     let inputID = document.querySelector('#register-id');
-    let inputPW = document.querySelector('#register-id');
+    let inputPW = document.querySelector('#register-pw');
 
     let response = await fetch('/user-api/sign-up', {
-        method: 'POST',
+        method : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+        body   : JSON.stringify({
             id: inputID.value,
             pw: inputPW.value
         })
     });
 
-    let result = await response.json();
-    if (result.state === 'success') {
-        alert('회원가입 성공!');
-    }
-    else {
+    if (response.status === 200) {
+        let result = await response.json();
+        if (result.state === 'success') {
+            alert('회원가입 성공!');
+        } else {
+            alert('회원가입 실패!');
+        }
+    } else {
         alert('회원가입 실패!');
     }
+}
+
+/** 로그인 요청 함수 */
+async function requestLogin() {
+    let inputID = document.querySelector('#login-id');
+    let inputPW = document.querySelector('#login-pw');
+
+    let response = await fetch('/user-api/sign-in', {
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body   : JSON.stringify({
+            id: inputID.value,
+            pw: inputPW.value
+        })
+    });
+
+    if (response.status === 200) {
+        let result = await response.json();
+        if (result.state === 'success') {
+            alert('로그인 성공!');
+        } else {
+            alert('로그인 실패!');
+        }
+    } else {
+        alert('로그인 실패!');
+    }
+
 }

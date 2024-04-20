@@ -136,6 +136,7 @@ body.root {
     border-bottom: unset;
 }
 
+
 .nav-menu:hover {
     background-color: var(--nav-item-bg-invert-color);
     color: var(--nav-font-invert-color);
@@ -157,6 +158,7 @@ body.root {
     background-position: 50% 50%;
     margin-left: auto;
 }
+
 .nav-menu.home:hover,
 .nav-menu.setting:hover {
     background-color: initial;
@@ -176,20 +178,24 @@ body.root {
     font-size: 16px;
     padding: 8px 12px;
 }
+
 .form-dropdown option {
     border: none;
     outline: none;
 }
+
 .form-dropdown:focus {
     outline: none;
     box-shadow: 0px 0px 8px 0px var(--modal-border-color);
 }
+
 .form-text {
     border: 1px solid var(--modal-border-color);
     border-radius: 4px;
     font-size: 16px;
     padding: 8px 12px;
 }
+
 .form-text:focus {
     outline: none;
     box-shadow: 0px 0px 8px 0px var(--modal-border-color);
@@ -399,4 +405,4 @@ a.large {
     width: 100%;
     justify-content: end;
     gap: 8px;
-}
+} 

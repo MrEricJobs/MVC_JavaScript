@@ -88,6 +88,15 @@ def initialize_once():
         )
     """)
 
+    db.execute_query("""
+        CREATE TABLE IF NOT EXISTS User (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT, -- User 테이블의 PK ID
+            id      TEXT UNIQUE,                       -- User의 ID(실제 계정 ID)
+            pw      BLOB                               -- User의 비밀번호 
+        )
+    """)
+
+
     # 생성된 스키마 확인
     ret = db.fetch_query("SELECT * FROM sqlite_schema")
     for r in ret:
