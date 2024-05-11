@@ -26,6 +26,7 @@ def sign_up():
 
     return jsonify({'state': 'success'})
 
+
 @user_bp.route('/sign-in', methods=['POST'])
 def sign_in():
     param = request.get_json()  # 요청 Body
@@ -40,4 +41,17 @@ def sign_in():
     if not has_id or not has_pw:
         return jsonify({'state': 'fail'})
 
+    result = user_service.login(param['id'], param['pw'])
+
+    return jsonify(result)
+
+@user_bp.route('/session-check', methods=['GET'])
+def session_check():
+    return jsonify(user_service.session_check())
+
+@user_bp.route('/sign-out', methods=['DELETE'])
+def sign_out():
+    user_service.logout()
     return jsonify({'state': 'success'})
+
+

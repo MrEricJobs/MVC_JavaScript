@@ -159,6 +159,22 @@ body.root {
     margin-left: auto;
 }
 
+.nav-menu.exit {
+    display: flex;
+    width: 80px;
+    cursor: pointer;
+    text-align: center;
+    background-color: unset;
+    background-image: url(/resource/icon/exit-icon.svg);
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    margin-left: auto;
+}
+.nav-menu.hidden {
+    display: none !important;
+}   
+
 .nav-menu.home:hover,
 .nav-menu.setting:hover {
     background-color: initial;

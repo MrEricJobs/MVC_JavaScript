@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', function() {
     initNavbar();
     initLoginModal();
     initRegisterModal();
+    setUserButton();
 
     // 페이지 로드 직후 바로 대시보드 불러오기
     let pageWrap = document.querySelector('#page-wrap');
@@ -35,6 +36,13 @@ function initNavbar() {
         modal.classList.add('on');
     });
 
+    let exitBtn = navbar.querySelector('.exit');
+    exitBtn.addEventListener('click', function(evt) {
+        evt.preventDefault();
+        requestLogout();
+        location.reload(true);
+    });
+
     // 내비게이션 바에 동적 메뉴 추가시 감지 및 클릭 이벤트 등록
     let navbarObserver = new MutationObserver((mutations) => {
         for (let mutation of mutations) {
@@ -52,6 +60,7 @@ function initNavbar() {
     let navMenuList = navbar.querySelectorAll('.nav-menu');
     for (let navMenu of navMenuList) {
         if (navMenu.classList.contains('setting')) continue;
+        if (navMenu.classList.contains('exit')) continue;
         navMenu.addEventListener('click', onNavMenuClick1);
     }
 }
@@ -80,7 +89,7 @@ function initLoginModal() {
     // 로그인 버튼 클릭시 로그인 시도
     signInBtn.addEventListener('click', function() {
         requestLogin();
-    })
+    });
 }
 
 /**
@@ -99,6 +108,20 @@ function initRegisterModal() {
         submitRegistration().then(function() {
             modal.classList.remove('on');
         });
+    });
+}
+
+function setUserButton() {
+    let setting = document.querySelector('.setting');
+    let exit = document.querySelector('.exit');
+    sessionCheck().then(function(result) {
+        if (result === true) {
+            setting.classList.add('hidden');
+            exit.classList.revmoe('hidden');
+        } else {
+            setting.classList.remove('hidden');
+            exit.classList.add('hidden');
+        }
     });
 }
 
@@ -166,12 +189,13 @@ async function submitRegistration() {
 
 /** 로그인 요청 함수 */
 async function requestLogin() {
+    let modal     = document.querySelector('#login-modal');
     let inputID = document.querySelector('#login-id');
     let inputPW = document.querySelector('#login-pw');
 
     let response = await fetch('/user-api/sign-in', {
         method : 'POST',
-        headers: { 'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json'},
         body   : JSON.stringify({
             id: inputID.value,
             pw: inputPW.value
@@ -182,11 +206,43 @@ async function requestLogin() {
         let result = await response.json();
         if (result.state === 'success') {
             alert('로그인 성공!');
+            location.reload(true);
         } else {
-            alert('로그인 실패!');
+            if (result.msg !== undefined) {
+                alert(result.msg);
+            } else {
+                alert('로그인 실패!');
+            }
         }
     } else {
         alert('로그인 실패!');
     }
+}
 
+async function sessionCheck() {
+    let response = await fetch('/user-api/session-check', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    });
+
+    let result = await response.json();
+
+    if (result.state === 'success')
+        return true;
+    else
+        return false;
+}
+
+async function requestLogout() {
+    let response = await fetch('/user-api/sign-out', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    });
+
+    let result = await response.json();
+    if (result.state === 'success') {
+        alert('로그아웃 성공!');
+    } else {
+        alert('로그아웃 실패!');
+    }
 }
